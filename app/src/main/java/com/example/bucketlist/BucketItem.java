@@ -22,6 +22,7 @@ public class BucketItem implements Parcelable {
     public BucketItem(String bucketItemName, String bucketItemDetails) {
         this.mBucketItemName = bucketItemName;
         this.mBucketItemDetails = bucketItemDetails;
+        this.mChecked = false;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class BucketItem implements Parcelable {
     }
 
     public String getBucketItemDetails() {
-        return mBucketItemDetails;
+        return this.mBucketItemDetails;
     }
 
     public void setBucketItemDetails(String bucketItemDetails) {
