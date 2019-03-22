@@ -9,7 +9,7 @@ import com.example.bucketlist.BucketItem;
 
 @Database(entities = {BucketItem.class}, version = 2, exportSchema = false)
 public abstract class BucketItemRoomDatabase extends RoomDatabase {
-    private final static String NAME_DATABASE = "bucket_databasee";
+    private final static String NAME_DATABASE = "bucket_db4";
     public abstract BucketItemDao bucketItemDao();
     private static volatile BucketItemRoomDatabase INSTANCE;
 
@@ -20,7 +20,7 @@ public abstract class BucketItemRoomDatabase extends RoomDatabase {
                     // Create database here
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             BucketItemRoomDatabase.class, NAME_DATABASE)
-                            .allowMainThreadQueries()
+//                            .allowMainThreadQueries()
                             .build();
                 }
             }
