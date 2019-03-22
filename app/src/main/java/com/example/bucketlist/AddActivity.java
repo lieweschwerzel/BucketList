@@ -20,8 +20,6 @@ import com.example.bucketlist.database.BucketItemRoomDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class AddActivity extends AppCompatActivity  {
 
@@ -35,7 +33,6 @@ public class AddActivity extends AppCompatActivity  {
     public CheckBox bucketCheckBox;
 
     private BucketItemRoomDatabase db;
-    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,24 +54,26 @@ public class AddActivity extends AppCompatActivity  {
                 String title = mBucketItemView.getText().toString();
                 String details = mBucketItemDetailsView.getText().toString();
 
+
+
                 BucketItem newBucketItem = new BucketItem(title, details);
                 //Check if some text has been added
                 if (!(TextUtils.isEmpty(title))) {
 //                    mBookmarks.add(newBookmark);
-//                    db.bucketItemDao().insertBucketItem(newBucketItem);
+                    db.bucketItemDao().insertBucketItem(newBucketItem);
 
-                    insertBucketItem(newBucketItem);
-                    Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                    Intent resultIntent = new Intent(AddActivity.this, MainActivity.class);
 //                    resultIntent.putExtra(MainActivity.EXTRA_BOOKMARK, newBucketItem);
 //                    setResult(Activity.RESULT_OK, resultIntent);
 //                    finish();
-                    startActivity(intent);
+                    startActivity(resultIntent);
                 } else {
                     //Show a message to the user if the textfield is empty
                     Snackbar.make(view, "Please enter some text in the textfield", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
+
     }
 
     @Override
@@ -85,16 +84,6 @@ public class AddActivity extends AppCompatActivity  {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void insertBucketItem(final BucketItem bucketItem) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                db.bucketItemDao().insertBucketItem(bucketItem);
-//                getAllBucketItems(); // Because the Room database has been modified we need to get the new list of reminders.
-            }
-        });
     }
 
 }

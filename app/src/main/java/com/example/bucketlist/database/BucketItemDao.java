@@ -14,7 +14,7 @@ import java.util.List;
 public interface BucketItemDao {
 
     @Query("SELECT * FROM bucketlist")
-    List<BucketItem> getAllBucketItems();
+    List<BucketItem> getAllReminders();
 
     @Insert
     void insertBucketItem(BucketItem bucketItem);
