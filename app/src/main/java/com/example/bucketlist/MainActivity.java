@@ -1,22 +1,16 @@
 package com.example.bucketlist;
 
-import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
+import android.view.Menu;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.Toast;
+
 
 import com.example.bucketlist.database.BucketItemRoomDatabase;
 
@@ -32,11 +26,6 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
     private BucketItemAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
-    //Constants used when calling the update activity
-    public static final String EXTRA_BOOKMARK = "Bookmark";
-    public static final int REQUESTCODE = 1234;
-    private int mNewPosition;
-    private GestureDetector mGestureDetector;
 
     private BucketItemRoomDatabase db;
 
@@ -46,6 +35,11 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
         db = BucketItemRoomDatabase.getDatabase(this);
 
@@ -54,13 +48,6 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
         mBucketItems = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-
-        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +99,13 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
 //    @Override
 //    public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
 //        View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
@@ -143,19 +137,19 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
 //
 //    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUESTCODE) {
-            if (resultCode == RESULT_OK) {
-                BucketItem newBucketItem = data.getParcelableExtra(MainActivity.EXTRA_BOOKMARK);
-                // New timestamp: timestamp of update
-//                mBucketItems.add(mNewPosition, newBucketItem);
-//                db.bucketItemDao().insertBucketItem(newBucketItem);
-                updateBucketItem(newBucketItem);
-                updateUI();
-            }
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUESTCODE) {
+//            if (resultCode == RESULT_OK) {
+//                BucketItem newBucketItem = data.getParcelableExtra(MainActivity.EXTRA_BOOKMARK);
+//                // New timestamp: timestamp of update
+////                mBucketItems.add(mNewPosition, newBucketItem);
+////                db.bucketItemDao().insertBucketItem(newBucketItem);
+//                updateBucketItem(newBucketItem);
+//                updateUI();
+//            }
+//        }
+//    }
 
     public void onBucketCheckBoxChanged(int position, boolean isChecked) {
         BucketItem bucketItem = mBucketItems.get(position);

@@ -58,7 +58,7 @@ public class BucketItemAdapter extends RecyclerView.Adapter<BucketItemAdapter.Vi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.bucketCheckBox = itemView.findViewById(R.id.checkbox_bucket);
+            this.bucketCheckBox = itemView.findViewById(R.id.checkbox);
             this.tvName = itemView.findViewById(R.id.text_title);
             this.tvDetails = itemView.findViewById(R.id.text_description);
 

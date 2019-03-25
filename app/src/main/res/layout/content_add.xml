@@ -8,21 +8,49 @@
     tools:context=".AddActivity"
     tools:showIn="@layout/activity_add">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/white"></android.support.v7.widget.Toolbar>
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="91dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:text="Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
-        android:id="@+id/editURL_add"
+        android:id="@+id/editTitle_add"
         android:layout_width="388dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="textUri"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         android:importantForAutofill="no" tools:targetApi="o"/>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="89dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle_add" />
+
     <EditText
-        android:id="@+id/editText_add"
+        android:id="@+id/editDescription_add"
         android:layout_width="390dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
@@ -32,26 +60,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         android:importantForAutofill="no" tools:targetApi="o"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="91dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/url"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="89dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editURL_add" />
 
 
 </android.support.constraint.ConstraintLayout>

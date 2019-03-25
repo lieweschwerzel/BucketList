@@ -6,9 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".AddActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/white">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+    </android.support.v7.widget.Toolbar>
+
     <include
+
         android:id="@+id/include"
-        layout="@layout/content_add" />
+        layout="@layout/content_add"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/button"
@@ -19,14 +32,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="251dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="434dp"
         android:text="Add Portal"
         app:layout_constraintBottom_toBottomOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.358" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,11 +42,15 @@ public class AddActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
         db = BucketItemRoomDatabase.getDatabase(this);
         //Initialize the instance variables
-        mBucketItemView = findViewById(R.id.editText_add);
-        mBucketItemDetailsView = findViewById(R.id.editURL_add);
+        mBucketItemView = findViewById(R.id.editTitle_add);
+        mBucketItemDetailsView = findViewById(R.id.editDescription_add);
         mBucketItems = new ArrayList<>();
 
         mBucketItemDetailsView.setText("https://");
