@@ -8,7 +8,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 
@@ -26,9 +28,7 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
     private BucketItemAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
-
     private BucketItemRoomDatabase db;
-
     private Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
+        final BucketItemAdapter mAdapter = new BucketItemAdapter(mBucketItems, this);
+        mRecyclerView.setAdapter(mAdapter);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,41 +61,73 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
             }
         });
 
-//       /* Add a touch helper to the RecyclerView to recognize when a user swipes to delete a list entry.
-//        An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
-//                and uses callbacks to signal when a user is performing these actions.
-//                */
-//        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+//        GestureDetector mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
 //
-//                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//                    @Override
-//                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-//                        return false;
-//                    }
-//                    //Called when a user swipes left or right on a ViewHolder
-//                    @Override
-//                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//                        //Get the index corresponding to the selected position
-//                        int position = (viewHolder.getAdapterPosition());
-////                        mBucketItems.remove(position);
-////                        mAdapter.notifyItemRemoved(position);
-////                        db.bucketItemDao().deleteBucketItem(mBucketItems.get(position));
-//                        deleteBucketItem(mBucketItems.get(position));
-//                        updateUI();
-//                    }
-//                };
+//        });
+//        mGestureDetector.setIsLongpressEnabled(true);
+
+//            public void onLongPress(MotionEvent event) {
+//                Log.e(TAG, "Longpress detected");
+//            }
+//            @Override
+//            public void onLongPress(MotionEvent e) {
+//                super.onLongPress(e);
+//                View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+//                if (child != null && mGestureDetector.onTouchEvent(e)) {
+////                    int adapterPosition = mRecyclerView.getChildAdapterPosition(child);
+////                    Toast.makeText(MainActivity.this, adapterPosition, Toast.LENGTH_SHORT).show();
+////                    deleteBucketItem(mBucketItems.get(adapterPosition));
+////                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+////                    int position = mRecyclerView.getChildAdapterPosition(child);
 //
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-//        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+////                    if (child != null ) {
+//                        Toast.makeText(MainActivity.this, "Checklist selected is set to false and ID is ", Toast.LENGTH_SHORT).show();
+////                    }
+//                }
+//            }
+//        });
+//        mRecyclerView.addOnItemTouchListener(this);
+//        getAllBucketItems();
+
+
+        /* An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
+                and uses callbacks to signal when a user is performing these actions.
+                */
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+                    @Override
+                    public boolean isLongPressDragEnabled() {
+                        return true;
+                    }
+                    //Called when a user swipes left or right on a ViewHolder
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        //Get the index corresponding to the selected position
+                        int position = (viewHolder.getAdapterPosition());//
+                        deleteBucketItem(mBucketItems.get(position));
+                        updateUI();
+                    }
+                };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 //        mRecyclerView.addOnItemTouchListener(this);
 
+        //get all current items, refresh
         getAllBucketItems();
     }
+
+
 
     private void updateUI() {
 //        mBucketItems = db.bucketItemDao().getAllBucketItems();
         if (mAdapter == null) {
-            mAdapter = new BucketItemAdapter(mBucketItems, this );
+            mAdapter = new BucketItemAdapter(mBucketItems, this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.swapList(mBucketItems);
@@ -106,55 +141,25 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
         return true;
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//        View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-//        int position = recyclerView.getChildAdapterPosition(child);
-//
-//        if (!mBucketItems.get(position).isChecked() && child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-//            Toast.makeText(this, "Checklist selected is set to false and ID is " + mBucketItems.get(position).getId(), Toast.LENGTH_SHORT).show();
-//        }
-//        return true;
-//
-////        View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-////        int mAdapterPosition = recyclerView.getChildAdapterPosition(child);
-////        if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-////            Intent intent = new Intent(MainActivity.this, WebActivity.class);
-//////            mNewPosition = mAdapterPosition;
-////            intent.putExtra(EXTRA_BOOKMARK, mBucketItems.get(mAdapterPosition));
-////            startActivityForResult(intent, REQUESTCODE);
-////        }
-//
-//    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
 
-//    @Override
-//    public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//
-//    }
-//
-//    @Override
-//    public void onRequestDisallowInterceptTouchEvent(boolean b) {
-//
-//    }
+            case R.id.action_remove:
+                deleteAll();
+                return true;
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUESTCODE) {
-//            if (resultCode == RESULT_OK) {
-//                BucketItem newBucketItem = data.getParcelableExtra(MainActivity.EXTRA_BOOKMARK);
-//                // New timestamp: timestamp of update
-////                mBucketItems.add(mNewPosition, newBucketItem);
-////                db.bucketItemDao().insertBucketItem(newBucketItem);
-//                updateBucketItem(newBucketItem);
-//                updateUI();
-//            }
-//        }
-//    }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void onBucketCheckBoxChanged(int position, boolean isChecked) {
         BucketItem bucketItem = mBucketItems.get(position);
         bucketItem.setChecked(isChecked);
-        mBucketItems.set(position, bucketItem);
+        updateBucketItem(mBucketItems.set(position, bucketItem));
         updateUI();
     }
 
@@ -180,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
             @Override
             public void run() {
                 db.bucketItemDao().updateBucketItem(bucketItem);
-                getAllBucketItems(); // Because the Room database has been modified we need to get the new list of reminders.
+                getAllBucketItems(); // Because the Room database has been modified we need to get the new list of items.
             }
         });
     }
@@ -190,8 +195,18 @@ public class MainActivity extends AppCompatActivity implements BucketChangedList
             @Override
             public void run() {
                 db.bucketItemDao().deleteBucketItem(bucketItem);
-                getAllBucketItems(); // Because the Room database has been modified we need to get the new list of reminders.
+                getAllBucketItems(); // Because the Room database has been modified we need to get the new list of items.
             }
         });
     }
+
+    public void deleteAll() {
+        for (int i = 0; i<mBucketItems.size(); i++ ){
+            BucketItem DelBucket = mBucketItems.get(i);
+            if (DelBucket.isChecked())
+                deleteBucketItem(DelBucket);
+        }
+    }
+
+
 }

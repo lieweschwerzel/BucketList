@@ -7,9 +7,9 @@ import android.content.Context;
 
 import com.example.bucketlist.BucketItem;
 
-@Database(entities = {BucketItem.class}, version = 2, exportSchema = false)
+@Database(entities = {BucketItem.class}, version = 1, exportSchema = false)
 public abstract class BucketItemRoomDatabase extends RoomDatabase {
-    private final static String NAME_DATABASE = "bucket_db4";
+    private final static String NAME_DATABASE = "bucket_database";
     public abstract BucketItemDao bucketItemDao();
     private static volatile BucketItemRoomDatabase INSTANCE;
 

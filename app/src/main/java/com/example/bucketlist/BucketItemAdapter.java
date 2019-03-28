@@ -1,6 +1,5 @@
 package com.example.bucketlist;
 
-    import android.content.Context;
     import android.graphics.Paint;
     import android.support.annotation.NonNull;
     import android.support.v7.widget.RecyclerView;
@@ -8,7 +7,6 @@ package com.example.bucketlist;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.CheckBox;
-    import android.widget.CompoundButton;
     import android.widget.TextView;
     import java.util.List;
 
@@ -94,9 +92,5 @@ public class BucketItemAdapter extends RecyclerView.Adapter<BucketItemAdapter.Vi
             description.setPaintFlags(description.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         }
     }
-
-
-
-
 }
 

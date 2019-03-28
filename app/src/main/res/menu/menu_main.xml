@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.bucketlist.MainActivity">
 
-
-    <item android:id="@+id/action_remove"
+    <item
+        android:id="@+id/action_remove"
         android:title="action_remove"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_delete"
-       />
+        android:icon="@drawable/delete_icon"
+        />
+
 </menu>

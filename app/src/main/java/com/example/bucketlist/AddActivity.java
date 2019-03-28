@@ -1,8 +1,6 @@
 package com.example.bucketlist;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.example.bucketlist.BucketItem;
-import com.example.bucketlist.BucketItemAdapter;
-import com.example.bucketlist.R;
 import com.example.bucketlist.database.BucketItemRoomDatabase;
 
 import java.util.ArrayList;
@@ -42,18 +37,18 @@ public class AddActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         db = BucketItemRoomDatabase.getDatabase(this);
         //Initialize the instance variables
         mBucketItemView = findViewById(R.id.editTitle_add);
         mBucketItemDetailsView = findViewById(R.id.editDescription_add);
         mBucketItems = new ArrayList<>();
-
-        mBucketItemDetailsView.setText("https://");
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -64,20 +59,12 @@ public class AddActivity extends AppCompatActivity  {
 
                 BucketItem newBucketItem = new BucketItem(title, details);
                 //Check if some text has been added
-                if (!(TextUtils.isEmpty(title))) {
-//                    mBookmarks.add(newBookmark);
-//                    db.bucketItemDao().insertBucketItem(newBucketItem);
-
-                    insertBucketItem(newBucketItem);
+                if (!(TextUtils.isEmpty(title)) && !(TextUtils.isEmpty(details))) {
+                  insertBucketItem(newBucketItem);
                     Intent intent = new Intent(AddActivity.this, MainActivity.class);
-//                    resultIntent.putExtra(MainActivity.EXTRA_BOOKMARK, newBucketItem);
-//                    setResult(Activity.RESULT_OK, resultIntent);
-//                    finish();
                     startActivity(intent);
-                } else {
-                    //Show a message to the user if the textfield is empty
-                    Snackbar.make(view, "Please enter some text in the textfield", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
+                } else
+                    Snackbar.make(view, "Please enter TEXT in both textfields", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
@@ -97,7 +84,6 @@ public class AddActivity extends AppCompatActivity  {
             @Override
             public void run() {
                 db.bucketItemDao().insertBucketItem(bucketItem);
-//                getAllBucketItems(); // Because the Room database has been modified we need to get the new list of reminders.
             }
         });
     }
