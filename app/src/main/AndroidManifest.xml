@@ -11,17 +11,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".AddActivity"
-            android:label="Create Bucket List Item" />
-        <activity
             android:name=".MainActivity"
-            android:label="Bucket List">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:launchMode="singleTop">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
+        <activity
+            android:name=".AddActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="Create Bucket List Item" />/>
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import com.example.bucketlist.BucketItem;
 
 @Database(entities = {BucketItem.class}, version = 1, exportSchema = false)
 public abstract class BucketItemRoomDatabase extends RoomDatabase {
-    private final static String NAME_DATABASE = "bucket_database";
+    private final static String NAME_DATABASE = "bucket_databas";
     public abstract BucketItemDao bucketItemDao();
     private static volatile BucketItemRoomDatabase INSTANCE;
 

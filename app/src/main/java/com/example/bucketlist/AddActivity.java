@@ -51,6 +51,7 @@ public class AddActivity extends AppCompatActivity  {
         mBucketItems = new ArrayList<>();
 
         Button button = findViewById(R.id.button);
+        
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,15 +70,6 @@ public class AddActivity extends AppCompatActivity  {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void insertBucketItem(final BucketItem bucketItem) {
         executor.execute(new Runnable() {
